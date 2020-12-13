@@ -1,18 +1,20 @@
 import ast
+from typing import List
 import requests
 from requests import get
 from pprint import pprint
 import time
 import json
 import yaml
+import fire
 
 
 #! ##### parsing.py
-def parent_return_search(parent_node):
+def parent_return_search(parent_node: ast.FunctionDef) -> List[ast.Return]:
     """Look for return statements in an ast FunctionDef"""
-    parent_return_nodes = []
+    parent_return_nodes: list[ast.Return] = []
 
-    def recursive_search(node):
+    def recursive_search(node: ast.AST):
         for child_node in ast.iter_child_nodes(node):
             if isinstance(child_node, ast.FunctionDef):
                 print(
@@ -28,7 +30,7 @@ def parent_return_search(parent_node):
     return parent_return_nodes
 
 
-def get_function_args(node):
+def get_function_args(node: ast.FunctionDef) -> dict:
     function_args = {}
 
     # get all function arguments
@@ -55,7 +57,7 @@ def custom_ast_unpack(node):
     try:
         parsed = ast.literal_eval(node)
         return parsed
-    except:
+    except Exception:
         pass
 
     if isinstance(node, ast.NameConstant):
@@ -88,7 +90,8 @@ def socless_lambda_parser(py_file_string):
     module = ast.parse(py_file_string)
 
     function_nodes = [
-        node for node in module.body
+        node
+        for node in module.body
         if isinstance(node, ast.FunctionDef) and node.name == "handle_state"
     ]
     if not function_nodes:
@@ -119,11 +122,12 @@ def socless_lambda_parser(py_file_string):
 
 
 def build_raw_lambda_url(
-        repo_name,
-        lambda_folder_name,
-        org_name="twilio-labs",
-        lambda_file_name="lambda_function.py",
-        branch="master",):
+    repo_name,
+    lambda_folder_name,
+    org_name="twilio-labs",
+    lambda_file_name="lambda_function.py",
+    branch="master",
+):
     return f"https://raw.githubusercontent.com/{org_name}/{repo_name}/{branch}/functions/{lambda_folder_name}/{lambda_file_name}"
 
 
@@ -145,10 +149,11 @@ def get_repo_functions_urls(repo_name, org_name="twilio-labs"):
 
 
 def build_serverless_yml_url(
-        repo_name,
-        org_name="twilio-labs",
-        lambda_file_name="lambda_function.py",
-        branch="master",):
+    repo_name,
+    org_name="twilio-labs",
+    lambda_file_name="lambda_function.py",
+    branch="master",
+):
     return f"https://raw.githubusercontent.com/{org_name}/{repo_name}/{branch}/serverless.yml"
 
 
@@ -167,7 +172,7 @@ def parse_yml(raw_yml):
         lambda_functions[lambda_folder_name] = {
             "lambda_folder_name": lambda_folder_name,
             "deployed_lambda_name": deployed_lambda_name,
-            "serverless_lambda_name": sls_lambda_name
+            "serverless_lambda_name": sls_lambda_name,
         }
 
     # nothing else needed from serverless.yml right now
@@ -183,22 +188,17 @@ def parse_serverless_yaml(repo):
     """
     repo_info = {}
     try:
-        with open(f"{repo.cache_path}/serverless.yml",
-                  "r") as serverless_stream:
+        with open(f"{repo.cache_path}/serverless.yml", "r") as serverless_stream:
             yaml_dict = yaml.safe_load(serverless_stream)
 
             # get function info
             repo_info["functions"] = {}
             for output_name, func in yaml_dict["functions"].items():
                 repo_info["functions"][output_name] = {
-                    "output_name":
-                    output_name,
-                    "description":
-                    func["description"] if "description" in func else "",
-                    "file_name":
-                    func["name"],
-                    "file_location":
-                    func["package"]["include"][0],
+                    "output_name": output_name,
+                    "description": func["description"] if "description" in func else "",
+                    "file_name": func["name"],
+                    "file_location": func["package"]["include"][0],
                 }
     except FileNotFoundError:
         # repo doesnt have a serverless.yml (doesn't deploy i.e. socless_python)
@@ -222,7 +222,7 @@ def build_socless_info(repo_names, write_to_file="socless_info"):
         resp = get(build_serverless_yml_url(name))
         resp.raise_for_status()
         yml_info = parse_yml(resp.content)
-        time.sleep(1)
+        time.sleep(1)  # ratelimit prevention
         for raw_lambda_url in get_repo_functions_urls(name):
             # retrive repo info
             # https://raw.githubusercontent.com/twilio-labs/socless-slack/master/functions/check_user_in_channel/lambda_function.py
@@ -237,16 +237,11 @@ def build_socless_info(repo_names, write_to_file="socless_info"):
                 socless_info[repo_name] = {"functions": {}}
 
             py_file_info = socless_lambda_parser(response.content)
-            
-            # merge yml data with function data in socless_info[repo_name]
-            merged_info = {
-              **py_file_info,
-              **yml_info["functions"][lambda_dir_name]
-            }
 
-            socless_info[repo_name]["functions"][
-                lambda_dir_name] = merged_info
-            
+            # merge yml data with function data in socless_info[repo_name]
+            merged_info = {**py_file_info, **yml_info["functions"][lambda_dir_name]}
+
+            socless_info[repo_name]["functions"][lambda_dir_name] = merged_info
 
             time.sleep(1)  # prevent rate limit for unauthenticated user
 
@@ -255,6 +250,6 @@ def build_socless_info(repo_names, write_to_file="socless_info"):
             f.write(json.dumps(socless_info))
 
     return socless_info
-    
-build_socless_info(repos)
 
+
+build_socless_info(repos)
