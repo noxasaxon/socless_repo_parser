@@ -10,9 +10,14 @@ from github import build_serverless_yml_url, get_repo_functions_urls
 # https://raw.githubusercontent.com/twilio-labs/socless-slack/master/functions/check_user_in_channel/lambda_function.py
 
 
-def build_socless_info(repo_names, write_to_file="socless_info"):
+def build_socless_info(repos, write_to_file="socless_info"):
+    print(repos)
+    if isinstance(repos, str):
+        repos = repos.split(",")
+
+    repos = [name.strip() for name in repos]
     socless_info = {}
-    for name in repo_names:
+    for name in repos:
         # get serverless.yml function info, names
         resp = get(build_serverless_yml_url(name))
         resp.raise_for_status()
@@ -52,21 +57,5 @@ def build_socless_info(repo_names, write_to_file="socless_info"):
 # build_socless_info(repos)
 
 
-class RepoParser:
-    def run(repos: Union[list, str], base_url="", org_name="twilio-labs"):
-        """Fetches raw file data from github and formats it into json object.
-        :param train_data_path: path to train data in csv format
-        :param model_path: path to save model to.
-        :param k: k-neighbors parameter of model.
-        """
-        print(repos)
-        if isinstance(repos, str):
-            repos = repos.split(",")
-
-        repos = [name.strip() for name in repos]
-
-        build_socless_info(repos)
-
-
 if __name__ == "__main__":
-    fire.Fire(RepoParser.run)
+    fire.Fire(build_socless_info)
