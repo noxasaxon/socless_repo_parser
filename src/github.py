@@ -76,7 +76,7 @@ def fetch_raw_function(
         raw_file_url = ""
         for file in lambda_dir_resp.json():
             if file_name in file["download_url"]:
-                raw_file_url = lambda_dir_resp.json()["download_url"]
+                raw_file_url = file["download_url"]
                 break
 
     else:

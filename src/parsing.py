@@ -62,7 +62,12 @@ def custom_ast_unpack(node):
     elif isinstance(node, ast.Num):
         return node.n
     elif isinstance(node, ast.JoinedStr):
+        # https://greentreesnakes.readthedocs.io/en/latest/nodes.html?highlight=joinedstr#JoinedStr
         print("JoinedStr not implemented")
+        return ""
+    elif isinstance(node, ast.Subscript):
+        # https://greentreesnakes.readthedocs.io/en/latest/nodes.html?highlight=subscript#Subscript
+        print("Subscript not implemented")
         return ""
     elif isinstance(node, ast.Return):
         return custom_ast_unpack(node.value)
