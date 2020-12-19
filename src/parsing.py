@@ -69,6 +69,16 @@ def custom_ast_unpack(node):
         # https://greentreesnakes.readthedocs.io/en/latest/nodes.html?highlight=subscript#Subscript
         print("Subscript not implemented")
         return ""
+    elif isinstance(node, ast.Call):
+        print("Call not implemented")
+        return ""
+    elif isinstance(node, ast.BinOp):
+        print("BinOp not implemented")
+        return ""
+    elif isinstance(node, ast.Compare):
+        print("Compare not implemented")
+        return ""
+
     elif isinstance(node, ast.Return):
         return custom_ast_unpack(node.value)
     elif isinstance(node, ast.Attribute):

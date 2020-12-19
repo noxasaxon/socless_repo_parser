@@ -43,11 +43,17 @@ def build_socless_info(
 
         for folder_data in get_lambda_folders_data(repo_name, org_name, ghe=ghe):
             dir_name = folder_data["name"]
+            if dir_name not in yml_info["functions"]:
+                print(
+                    f"File exists for function {dir_name}, but it is not used in serverless.yml. Skip saving info for {dir_name}."
+                )
+                continue
 
             raw_function = fetch_raw_function(folder_data, repo_name, org_name, ghe=ghe)
             py_file_info = socless_lambda_parser(raw_function)
 
             # merge yml data with function data in socless_info[repo_name]
+
             merged_info = {**py_file_info, **yml_info["functions"][dir_name]}
 
             socless_info[repo_name]["functions"][dir_name] = merged_info
