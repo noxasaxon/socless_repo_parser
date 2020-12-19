@@ -23,9 +23,11 @@ def build_socless_info(
         write_to_file: str - filename for json output. if empty, will print to stdout instead
 
     For Github Enterprise:
-        export GHE_DOMAIN=<Your_Company's_GHE_Domain.com>
+    ```
+        export GHE_DOMAIN=<Your_GHE_Domain.com>
         export GHE_TOKEN=<Personal_Access_Token>
         python3 main.py "socless-slack, socless" --org_name=<Org_Name> --ghe=True
+    ```
     """
     if isinstance(repos, str):
         repos = repos.split(",")
@@ -68,10 +70,4 @@ def build_socless_info(
 
 
 if __name__ == "__main__":
-    """
-    For Github Enterprise:
-        export GHE_DOMAIN=<Your_Company's_GHE_Domain.com>
-        export GHE_TOKEN=<Personal_Access_Token>
-        python3 main.py "socless-slack, socless" --org_name=<Org_Name> --ghe=True
-    """
     fire.Fire(build_socless_info)
