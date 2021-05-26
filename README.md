@@ -20,3 +20,56 @@ Then run this script with flag `--ghe=True`
 ```bash
 python3 main.py "socless, socless-slack" --org-name="<github_organization>" --ghe=True
 ```
+
+
+
+## Example of scraper output
+```
+{
+   {
+     "socless-slack": {
+       "meta" : {
+           "repo_url" : "https://www.github.com/twilio-labs/socless-slack"
+           "integration_family" : "socless-slack"
+       },
+       "functions": {
+           "check_user_in_channel": {
+               "meta" : {
+                   "lambda_folder_name": "check_user_in_channel",
+                   "deployed_lambda_name": "socless_slack_check_user_in_channel",
+                   "serverless_lambda_name": "CheckIfUserInChannel",
+                   "supported_in_playbook" : true
+               },
+               "resource_type" : "socless_task | socless_interaction",
+               "arguments": {
+                   "user_id": {
+                       "name": "user_id",
+                       "data_type" : "string",
+                       "required": true,
+                       "description": "",
+                       "placeholder" : ""
+                   },
+                   "target_channel_id": {
+                       "name": "target_channel_id",
+                       "data_type" : "string",
+                       "required": true,
+                       "description": "",
+                       "placeholder" : ""
+                   }
+               },
+               "return_statements": [
+                   {
+                       "ok": true
+                   },
+                   {
+                       "ok": false
+                   }
+               ]
+           },
+     },
+     {
+       "socless" : {...}
+     }
+ }
+
+```

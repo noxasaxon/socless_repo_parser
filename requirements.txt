@@ -1,0 +1,3 @@
+pygithub==1.55
+ruamel.yaml==0.17.4
+pyyaml
