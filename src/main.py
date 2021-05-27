@@ -6,6 +6,7 @@ from src.github import (
     fetch_raw_function,
     fetch_raw_serverless_yml,
 )
+from src.models import IntegrationFamily
 
 
 def build_socless_info(
