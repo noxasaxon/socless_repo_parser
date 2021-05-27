@@ -26,8 +26,7 @@ python3 main.py "socless, socless-slack" --org-name="<github_organization>" --gh
 ## Example of scraper output
 ```json
 {
-   {
-     "socless-slack": {
+    "socless-slack": {
        "meta" : {
            "repo_url" : "https://www.github.com/twilio-labs/socless-slack",
            "integration_family" : "socless-slack"
@@ -66,10 +65,11 @@ python3 main.py "socless, socless-slack" --org-name="<github_organization>" --gh
                    }
                ]
            },
-     },
-     {
-       "socless" : {...}
-     }
- }
+        }
+    },
+    {
+        "socless" : {...}
+    }
+}
 
 ```

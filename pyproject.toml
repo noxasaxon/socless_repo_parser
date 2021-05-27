@@ -7,7 +7,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
-addopts = '--cov=src'
+# addopts = '--cov=src'
 testpaths = ["tests"]
 
 [tool.coverage.run] # https://coverage.readthedocs.io/en/latest/config.html
