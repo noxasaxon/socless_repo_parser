@@ -26,50 +26,72 @@ python3 main.py "socless, socless-slack" --org-name="<github_organization>" --gh
 ## Example of scraper output
 ```json
 {
-    "socless-slack": {
-       "meta" : {
-           "repo_url" : "https://www.github.com/twilio-labs/socless-slack",
-           "integration_family" : "socless-slack"
-       },
-       "functions": {
-           "check_user_in_channel": {
-               "meta" : {
-                   "lambda_folder_name": "check_user_in_channel",
-                   "deployed_lambda_name": "socless_slack_check_user_in_channel",
-                   "serverless_lambda_name": "CheckIfUserInChannel",
-                   "supported_in_playbook" : true
-               },
-               "resource_type" : "socless_task | socless_interaction",
-               "arguments": {
-                   "user_id": {
-                       "name": "user_id",
-                       "data_type" : "string",
-                       "required": true,
-                       "description": "",
-                       "placeholder" : ""
-                   },
-                   "target_channel_id": {
-                       "name": "target_channel_id",
-                       "data_type" : "string",
-                       "required": true,
-                       "description": "",
-                       "placeholder" : ""
-                   }
-               },
-               "return_statements": [
-                   {
-                       "ok": true
-                   },
-                   {
-                       "ok": false
-                   }
-               ]
-           },
+    "integrations": [
+        {
+            "meta": {
+                "repo_url": "https://www.github.com/twilio-labs/socless-slack",
+                "integration_family": "socless-slack"
+            },
+            "functions": [
+                {
+                    "meta": {
+                        "lambda_folder_name": "check_user_in_channel",
+                        "deployed_lambda_name": "socless_slack_check_user_in_channel",
+                        "serverless_lambda_name": "CheckIfUserInChannel",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task | socless_interaction",
+                    "arguments": [
+                        {
+                            "name": "user_id",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": ""
+                        },
+                        {
+                            "name": "target_channel_id",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": ""
+                        }
+                    ],
+                    "return_statements": [
+                        {
+                            "ok": true
+                        },
+                        {
+                            "ok": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "meta": {
+                "repo_url": "https://www.github.com/twilio-labs/socless",
+                "integration_family": "socless"
+            }, 
+            "functions" : [...]
         }
-    },
-    {
-        "socless" : {...}
-    }
+    ]
 }
 
 ```
+
+# TODO
+- [ ] add meta to each function
+  - [ ] "meta" : {
+           "lambda_folder_name": "check_user_in_channel",
+            "deployed_lambda_name": "socless_slack_check_user_in_channel",
+            "serverless_lambda_name": "CheckIfUserInChannel",
+            "supported_in_playbook" : true
+        }
+- [ ] add resource_type (probably by trigger_id arg presence)
+- [ ] add meta to integration family
+  - [ ] {
+           "repo_url" : "https://www.github.com/twilio-labs/socless-slack",
+           "integration_family" : "socless-slack"
+       }
+- [ ] add `data_type` & `placeholder` to each argument

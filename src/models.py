@@ -7,8 +7,7 @@ from pydantic import BaseModel, Field
 from typing import Dict, List, Any, Union
 
 
-@dataclass
-class SoclessFunctionMeta:
+class SoclessFunctionMeta(BaseModel):
     lambda_folder_name: str  # check_user_in_channel,
     deployed_lambda_name: str  # socless_slack_check_user_in_channel,
     serverless_lambda_name: str  # CheckIfUserInChannel,
@@ -20,8 +19,7 @@ class SoclessResourceType(str, Enum):
     socless_interaction = "socless_interaction"
 
 
-@dataclass
-class SoclessFunctionArgument:
+class SoclessFunctionArgument(BaseModel):
     name: str
     data_type: str
     required: bool
@@ -29,35 +27,36 @@ class SoclessFunctionArgument:
     placeholder: str
 
 
-@dataclass
-class SoclessFunction:
+class SoclessFunction(BaseModel):
     meta: SoclessFunctionMeta
     resource_type: SoclessResourceType
-    arguments: Dict[str, SoclessFunctionArgument] = field(default_factory=lambda: {})
-    return_statements: List[Dict[str, Any]] = field(default_factory=lambda: [])
+    arguments: List[SoclessFunctionArgument] = Field(default_factory=lambda: [])
+    return_statements: List[Dict[str, Any]] = Field(default_factory=lambda: [])
 
 
-@dataclass
-class IntegrationMeta:
+class IntegrationMeta(BaseModel):
     repo_url: str = ""
     integration_family: str = ""
 
 
-@dataclass
-class IntegrationFamily:
+class IntegrationFamily(BaseModel):
     meta: IntegrationMeta
-    functions: Dict[str, SoclessFunction] = field(default_factory=lambda: {})
+    functions: List[SoclessFunction] = Field(default_factory=lambda: [])
 
 
-def build_integration_classes_from_json(
-    input: Union[str, dict]
-) -> Dict[str, IntegrationFamily]:
+class AllIntegrations(BaseModel):
+    integrations: List[IntegrationFamily] = Field(default_factory=[])
+
+
+def build_integration_classes_from_json(input: Union[str, dict]) -> AllIntegrations:
     if isinstance(input, str):
         input = json.loads(input)
 
-    output = {}
+    all_integrations = []
 
-    for family_name, integration_family in input.items():
-        output[family_name] = IntegrationFamily(**integration_family)
+    for integration_family in input["integrations"]:
+        all_integrations.append(IntegrationFamily(**integration_family))
+
+    output = AllIntegrations(integrations=all_integrations)
 
     return output

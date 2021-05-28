@@ -1,0 +1,5 @@
+PACKAGE_JSON = "package.json"
+SERVERLESS_YML = "serverless.yml"
+ONBOARDED_REPOS = "onboarded_repos.json"
+REQUIREMENTS_TXT = "requirements.txt"
+REQUIREMENTS_FULL_PATH = f"functions/{REQUIREMENTS_TXT}"

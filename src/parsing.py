@@ -1,6 +1,8 @@
 import ast
 from typing import List
-import yaml
+from ruamel.yaml import YAML
+
+yaml = YAML(typ="safe")
 
 
 def parent_return_search(parent_node: ast.FunctionDef) -> List[ast.Return]:
@@ -124,7 +126,7 @@ def socless_lambda_parser(py_file_string):
 
 
 def parse_yml(raw_yml):
-    yml_dict = yaml.safe_load(raw_yml)
+    yml_dict = yaml.load(raw_yml)
     yml_functions = yml_dict["functions"]
 
     lambda_functions = {}
