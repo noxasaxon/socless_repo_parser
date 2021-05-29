@@ -81,17 +81,19 @@ python3 main.py "socless, socless-slack" --org-name="<github_organization>" --gh
 ```
 
 # TODO
-- [ ] add meta to each function
-  - [ ] "meta" : {
-           "lambda_folder_name": "check_user_in_channel",
-            "deployed_lambda_name": "socless_slack_check_user_in_channel",
-            "serverless_lambda_name": "CheckIfUserInChannel",
-            "supported_in_playbook" : true
-        }
-- [ ] add resource_type (probably by trigger_id arg presence)
-- [ ] add meta to integration family
-  - [ ] {
-           "repo_url" : "https://www.github.com/twilio-labs/socless-slack",
-           "integration_family" : "socless-slack"
-       }
-- [ ] add `data_type` & `placeholder` to each argument
+- [X] convert to lists instead of dicts for output
+- [X] add integration_family to integration_family.meta
+- [X] add meta to integration family
+- [X] add meta to each function
+- [X] add repo_url to integration_family.meta
+- [ ] correctly fill out repo_url in integration_family.meta
+- [X] add supported_in_playbook to each function.meta
+- [ ] correctly fill out supported_in_playbook in each function.meta
+- [X] add resource_type (probably by trigger_id arg presence)
+  - checks if `"receiver"` arg is present in handle_state
+- [X] add `data_type` to each function argument
+  - converts python type to json type
+  - if no type hint, defaults to null because None == Null but if no hint is specified ast will report that as None too. Not great.
+- [X] add `placeholder` to each function argument
+- [ ] parse placeholder info from function (docstring?)
+- [X] add `internal` boolean to each function argument 

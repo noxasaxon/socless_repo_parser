@@ -1,5 +1,4 @@
-from src.models import IntegrationFamily, build_integration_classes_from_json
-from pydantic.json import pydantic_encoder
+from src.models import build_integration_classes_from_json
 import json
 
 mock_json_output = {
@@ -25,6 +24,7 @@ mock_json_output = {
                             "required": True,
                             "description": "",
                             "placeholder": "",
+                            "internal": False,
                         },
                         {
                             "name": "target_channel_id",
@@ -32,6 +32,7 @@ mock_json_output = {
                             "required": True,
                             "description": "",
                             "placeholder": "",
+                            "internal": False,
                         },
                     ],
                     "return_statements": [{"ok": True}, {"ok": False}],
