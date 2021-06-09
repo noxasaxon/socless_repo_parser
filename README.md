@@ -1,5 +1,5 @@
 # socless_repo_parser
-Takes a socless repo names and queries github api for their raw lambda .py files and serverless.yml, parsing key elements into a single json output
+Take a list of socless repo names and query the github api for their raw lambda .py files and serverless.yml, parsing key elements into a single json output to build a catalog of all available lambda functions in the ecosystem.
 
 ## Usage
 
