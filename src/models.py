@@ -2,9 +2,26 @@
 import json
 from enum import Enum
 from pydantic import BaseModel
-from typing import Dict, List, Any, Union
+from typing import Dict, List, Any, Optional, Union
+from src.constants import INTERACTION_ARG_NAMES, NO_DEFAULT_VALUE
+from github.Repository import Repository
+from github.ContentFile import ContentFile
+from dataclasses import dataclass
 
-from src.constants import INTERACTION_ARG_NAMES
+
+@dataclass
+class RepoNameInfo:
+    name: str
+    org: str
+
+
+@dataclass
+class FileExistence:
+    gh_repo: Repository
+    file_path: str
+    branch_exists: bool = False
+    file_exists: bool = False
+    file_contents: Union[bool, ContentFile, List[ContentFile]] = False
 
 
 class SoclessFunctionMeta(BaseModel):
@@ -26,6 +43,7 @@ class SoclessFunctionArgument(BaseModel):
     description: str = ""
     placeholder: str = ""
     internal: bool = False
+    default_value: Any = NO_DEFAULT_VALUE
 
 
 class SoclessFunction(BaseModel):

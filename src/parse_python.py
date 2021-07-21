@@ -1,26 +1,7 @@
 import ast
 from typing import Dict, List
-from src.constants import HANDLE_STATE_FN_NAME, INTERNAL_ARG_NAMES
+from src.constants import HANDLE_STATE_FN_NAME, INTERNAL_ARG_NAMES, NO_DEFAULT_VALUE
 from src.models import SoclessFunction, SoclessFunctionArgument
-
-
-def convert_python_type_name_to_json_name(py_type_name) -> str:
-    if py_type_name == str.__name__:
-        return "string"
-    elif py_type_name == bool.__name__:
-        return "boolean"
-    elif py_type_name == int.__name__:
-        return "number"
-    elif py_type_name == dict.__name__:
-        return "object"
-    elif py_type_name == list.__name__:
-        return "array"
-    elif py_type_name == "None":
-        return "null"
-    else:
-        raise NotImplementedError(
-            f"No json type conversion configured for python type: {py_type_name}"
-        )
 
 
 def custom_ast_unpack(node):
@@ -102,20 +83,104 @@ def get_return_statements(parent_node: ast.FunctionDef):
     return return_statements
 
 
-def get_function_args(node: ast.FunctionDef) -> List[SoclessFunctionArgument]:
+def convert_python_primitive_name_to_json_name(type_name: str) -> str:
+    if type_name == str.__name__:
+        return "string"
+    elif type_name == bool.__name__:
+        return "boolean"
+    elif type_name == int.__name__:
+        return "number"
+    elif type_name == dict.__name__:
+        return "object"
+    elif type_name == list.__name__:
+        return "array<>"
+    elif type_name == "NoneType":
+        return "null"
+    elif type_name == "None":
+        return "null"
+    else:
+        raise NotImplementedError(
+            f"No json type conversion configured for python type: {type_name}"
+        )
+
+
+def convert_python_hints_to_json_type_hints(arg_annotation_obj: ast.expr) -> str:
+    try:
+        # basic types
+        py_type_name = str(arg_annotation_obj.id)  # type:ignore
+        return convert_python_primitive_name_to_json_name(py_type_name)
+    except AttributeError:
+        # custom types including type hints
+        if isinstance(arg_annotation_obj, ast.Subscript):
+            if not isinstance(arg_annotation_obj.value, ast.Name):
+                raise NotImplementedError(
+                    f"Subscript value is not a Name: \n {arg_annotation_obj.__dict__} \n {arg_annotation_obj.value.__dict__}"
+                )
+
+            typing_type_name = arg_annotation_obj.value.id
+            if typing_type_name == "Optional":
+                return convert_python_hints_to_json_type_hints(
+                    arg_annotation_obj.slice.value  # type:ignore
+                )
+            elif typing_type_name == "List":
+                slice_data_type = convert_python_hints_to_json_type_hints(
+                    arg_annotation_obj.slice.value  # type:ignore
+                )
+                return f"array<{slice_data_type}>"
+            elif typing_type_name == "Union":
+                slice_data_type = convert_python_hints_to_json_type_hints(
+                    arg_annotation_obj.slice.value  # type:ignore
+                )
+                return f"union<{slice_data_type}>"
+            else:
+                raise NotImplementedError(
+                    f"no parsing implemented for Subscript type of: {typing_type_name} \n {arg_annotation_obj.__dict__}"
+                )
+        elif isinstance(arg_annotation_obj, type(None)):
+            return "null"
+        elif isinstance(arg_annotation_obj, ast.Tuple):
+            tuple_types = [
+                convert_python_hints_to_json_type_hints(x)
+                for x in arg_annotation_obj.elts
+            ]
+            return ",".join(tuple_types)
+        else:
+            raise NotImplementedError(
+                f"No json type conversion configured for python type: {arg_annotation_obj}"
+            )
+
+
+def get_function_args_info(node: ast.FunctionDef) -> List[SoclessFunctionArgument]:
     function_args: Dict[str, SoclessFunctionArgument] = {}
 
-    # get all function arguments
-    for a in node.args.args:
+    defaults_list_offset = len(node.args.args) - len(node.args.defaults)
 
+    # get all function arguments
+    for i, arg in enumerate(node.args.args):
         arg_info = SoclessFunctionArgument()
-        arg_info.name = a.arg
-        arg_info.data_type = (
-            a.annotation.id if isinstance(a.annotation, ast.Name) else str(a.annotation)
+        if i >= defaults_list_offset:
+            arg_info.required = False
+            # find the corresponding default for this optional arg
+            this_default = node.args.defaults[i - defaults_list_offset]
+            arg_info.default_value = custom_ast_unpack(this_default)
+
+        else:
+            arg_info.required = True
+            arg_info.default_value = NO_DEFAULT_VALUE
+        arg_info.name = arg.arg
+
+        arg_info.data_type = convert_python_hints_to_json_type_hints(
+            arg.annotation  # type:ignore
         )
-        arg_info.data_type = convert_python_type_name_to_json_name(arg_info.data_type)
+
+        # attempt to infer type for unhinted args with default values
+        if arg_info.data_type == "null" and arg_info.default_value != NO_DEFAULT_VALUE:
+            arg_info.data_type = convert_python_primitive_name_to_json_name(
+                str(type(arg_info.default_value).__name__)
+            )
+
+        # TODO: formalize the syntax for getting this info, then get it
         arg_info.description = ""
-        arg_info.required = True
         arg_info.placeholder = ""
 
         if arg_info.name in INTERNAL_ARG_NAMES:
@@ -147,12 +212,8 @@ def socless_lambda_parser(py_file_string) -> SoclessFunction:
         return SoclessFunction()
 
     function_info = SoclessFunction()
-    function_info.arguments = get_function_args(handle_state_node)
+    function_info.arguments = get_function_args_info(handle_state_node)
     function_info.return_statements = get_return_statements(handle_state_node)
     function_info.check_and_set_supported_in_playbook()
-
-    # function_info.meta = something
-    # function_info.resource_type = something # TODO: figure out how to tell if task or interaction
-    # function_info.supported_in_playbook = something # TODO: figure out how to to tell if used in playbooks
 
     return function_info

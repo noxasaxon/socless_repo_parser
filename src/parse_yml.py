@@ -12,10 +12,10 @@ class ParseYmlOutput(BaseModel):
 
 
 def parse_yml(raw_yml) -> ParseYmlOutput:
-    yml_dict = yaml.load(raw_yml)
-    yml_functions = yml_dict["functions"]
-
     output = ParseYmlOutput()
+    yml_dict = yaml.load(raw_yml)
+
+    yml_functions = yml_dict["functions"]
 
     for sls_lambda_name, func_obj in yml_functions.items():
         function_info = SoclessFunctionMeta(
