@@ -47,14 +47,17 @@ python3 main.py "socless, socless-slack" --org-name="<github_organization>" --gh
                             "data_type": "string",
                             "required": true,
                             "description": "",
-                            "placeholder": ""
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": "<no_default>"
                         },
                         {
                             "name": "target_channel_id",
                             "data_type": "string",
                             "required": true,
                             "description": "",
-                            "placeholder": ""
+                            "placeholder": "",
+                            "default_value": ""
                         }
                     ],
                     "return_statements": [
