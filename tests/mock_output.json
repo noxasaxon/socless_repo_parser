@@ -44,7 +44,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "value",
@@ -53,7 +53,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         }
                     ],
                     "return_statements": []
@@ -74,7 +74,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "operation",
@@ -83,7 +83,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "operation_parameters",
@@ -92,7 +92,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "assume_role_config",
@@ -101,7 +101,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "disable_pagination",
@@ -140,7 +140,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "entries",
@@ -149,7 +149,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         }
                     ],
                     "return_statements": [
@@ -174,7 +174,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": true,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "state_name",
@@ -183,7 +183,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "start",
@@ -192,7 +192,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "delta",
@@ -201,14 +201,14 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "direction",
                             "data_type": "string",
                             "required": false,
                             "description": "",
-                            "placeholder": "",
+                            "placeholder": "up",
                             "internal": false,
                             "default_value": "up"
                         }
@@ -247,7 +247,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "url",
@@ -256,14 +256,14 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "raise_for_status",
                             "data_type": "boolean",
                             "required": false,
                             "description": "",
-                            "placeholder": "",
+                            "placeholder": true,
                             "internal": false,
                             "default_value": true
                         },
@@ -326,7 +326,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         }
                     ],
                     "return_statements": [
@@ -367,7 +367,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "status",
@@ -376,7 +376,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         }
                     ],
                     "return_statements": [
@@ -432,7 +432,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "target_channel_id",
@@ -441,7 +441,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         }
                     ],
                     "return_statements": [
@@ -469,7 +469,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "user_ids",
@@ -558,7 +558,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "user_id",
@@ -617,7 +617,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": true,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "target_type",
@@ -626,7 +626,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "target",
@@ -635,7 +635,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "text",
@@ -644,7 +644,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "receiver",
@@ -669,7 +669,7 @@
                             "data_type": "string",
                             "required": false,
                             "description": "",
-                            "placeholder": "",
+                            "placeholder": "Yes",
                             "internal": false,
                             "default_value": "Yes"
                         },
@@ -678,7 +678,7 @@
                             "data_type": "string",
                             "required": false,
                             "description": "",
-                            "placeholder": "",
+                            "placeholder": "No",
                             "internal": false,
                             "default_value": "No"
                         },
@@ -687,7 +687,7 @@
                             "data_type": "boolean",
                             "required": false,
                             "description": "",
-                            "placeholder": "",
+                            "placeholder": true,
                             "internal": false,
                             "default_value": true
                         }
@@ -716,7 +716,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": true,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "target",
@@ -725,7 +725,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "target_type",
@@ -734,7 +734,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "message_template",
@@ -743,7 +743,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "receiver",
@@ -759,7 +759,7 @@
                             "data_type": "string",
                             "required": false,
                             "description": "",
-                            "placeholder": "",
+                            "placeholder": "[response]",
                             "internal": false,
                             "default_value": "[response]"
                         },
@@ -768,7 +768,7 @@
                             "data_type": "boolean",
                             "required": false,
                             "description": "",
-                            "placeholder": "",
+                            "placeholder": true,
                             "internal": false,
                             "default_value": true
                         }
@@ -797,7 +797,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": true,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "trigger_id",
@@ -806,7 +806,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "title",
@@ -815,7 +815,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "elements",
@@ -824,7 +824,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "receiver",
@@ -840,7 +840,7 @@
                             "data_type": "string",
                             "required": false,
                             "description": "",
-                            "placeholder": "",
+                            "placeholder": "Submit",
                             "internal": false,
                             "default_value": "Submit"
                         },
@@ -849,7 +849,7 @@
                             "data_type": "string",
                             "required": false,
                             "description": "",
-                            "placeholder": "",
+                            "placeholder": "n/a",
                             "internal": false,
                             "default_value": "n/a"
                         }
@@ -877,7 +877,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": true,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "message_template",
@@ -886,7 +886,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "target",
@@ -895,7 +895,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "target_type",
@@ -904,14 +904,14 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "as_user",
                             "data_type": "boolean",
                             "required": false,
                             "description": "",
-                            "placeholder": "",
+                            "placeholder": true,
                             "internal": false,
                             "default_value": true
                         }
@@ -939,7 +939,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         },
                         {
                             "name": "topic",
@@ -948,7 +948,7 @@
                             "description": "",
                             "placeholder": "",
                             "internal": false,
-                            "default_value": "<no_default>"
+                            "default_value": null
                         }
                     ],
                     "return_statements": [
@@ -983,7 +983,7 @@
                             "data_type": "string",
                             "required": false,
                             "description": "",
-                            "placeholder": "",
+                            "placeholder": "display_name",
                             "internal": false,
                             "default_value": "display_name"
                         }

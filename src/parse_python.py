@@ -1,6 +1,6 @@
 import ast
 from typing import Dict, List
-from src.constants import HANDLE_STATE_FN_NAME, INTERNAL_ARG_NAMES, NO_DEFAULT_VALUE
+from src.constants import HANDLE_STATE_FN_NAME, INTERNAL_ARG_NAMES
 from src.models import SoclessFunction, SoclessFunctionArgument
 
 
@@ -36,7 +36,6 @@ def custom_ast_unpack(node):
     elif isinstance(node, ast.Compare):
         print("Compare not implemented")
         return ""
-
     elif isinstance(node, ast.Return):
         return custom_ast_unpack(node.value)
     elif isinstance(node, ast.Attribute):
@@ -166,7 +165,6 @@ def get_function_args_info(node: ast.FunctionDef) -> List[SoclessFunctionArgumen
 
         else:
             arg_info.required = True
-            arg_info.default_value = NO_DEFAULT_VALUE
         arg_info.name = arg.arg
 
         arg_info.data_type = convert_python_hints_to_json_type_hints(
@@ -174,7 +172,7 @@ def get_function_args_info(node: ast.FunctionDef) -> List[SoclessFunctionArgumen
         )
 
         # attempt to infer type for unhinted args with default values
-        if arg_info.data_type == "null" and arg_info.default_value != NO_DEFAULT_VALUE:
+        if arg_info.data_type == "null" and arg_info.default_value is not None:
             arg_info.data_type = convert_python_primitive_name_to_json_name(
                 str(type(arg_info.default_value).__name__)
             )
@@ -182,6 +180,9 @@ def get_function_args_info(node: ast.FunctionDef) -> List[SoclessFunctionArgumen
         # TODO: formalize the syntax for getting this info, then get it
         arg_info.description = ""
         arg_info.placeholder = ""
+        #! FIX: temporary way to get placeholder info, until it is formalized
+        if arg_info.default_value and not arg_info.placeholder:
+            arg_info.placeholder = arg_info.default_value
 
         if arg_info.name in INTERNAL_ARG_NAMES:
             arg_info.internal = True

@@ -1,5 +1,6 @@
 import ast
-from src.models import SoclessFunction
+from typing import List
+from src.models import SoclessFunction, SoclessFunctionArgument
 from src.parse_python import (
     # convert_python_type_name_to_json_name,
     get_function_args_info,
@@ -18,32 +19,127 @@ def tester(no_type_info_test, str_test: str, list_test: list, dict_test: dict, i
     raise NotImplementedError("No function definition in mock ast data")
 
 
-def mock_parsed_handle_state_socless_info() -> SoclessFunction:
+def expected_parsed_args_for_mock_handle_state() -> List[SoclessFunctionArgument]:
+    return [
+        SoclessFunctionArgument(
+            name="no_type_info_test",
+            data_type="null",
+            required=True,
+            description="",
+            placeholder="",
+            internal=False,
+            default_value=None,
+        ),
+        SoclessFunctionArgument(
+            name="str_test",
+            data_type="string",
+            required=True,
+            description="",
+            placeholder="",
+            internal=False,
+            default_value=None,
+        ),
+        SoclessFunctionArgument(
+            name="list_test",
+            data_type="array<>",
+            required=True,
+            description="",
+            placeholder="",
+            internal=False,
+            default_value=None,
+        ),
+        SoclessFunctionArgument(
+            name="dict_test",
+            data_type="object",
+            required=True,
+            description="",
+            placeholder="",
+            internal=False,
+            default_value=None,
+        ),
+        SoclessFunctionArgument(
+            name="int_test",
+            data_type="number",
+            required=True,
+            description="",
+            placeholder="",
+            internal=False,
+            default_value=None,
+        ),
+        SoclessFunctionArgument(
+            name="none_test",
+            data_type="null",
+            required=False,
+            description="",
+            placeholder="",
+            internal=False,
+            default_value=None,
+        ),
+        SoclessFunctionArgument(
+            name="empty_dict_test",
+            data_type="object",
+            required=False,
+            description="",
+            placeholder="",
+            internal=False,
+            default_value={},
+        ),
+        SoclessFunctionArgument(
+            name="union_test",
+            data_type="union<string,array<>>",
+            required=False,
+            description="",
+            placeholder="",
+            internal=False,
+            default_value=[],
+        ),
+        SoclessFunctionArgument(
+            name="optional_test",
+            data_type="string",
+            required=False,
+            description="",
+            placeholder="",
+            internal=False,
+            default_value="",
+        ),
+        SoclessFunctionArgument(
+            name="list_typing_test",
+            data_type="array<string>",
+            required=False,
+            description="",
+            placeholder="",
+            internal=False,
+            default_value=[],
+        ),
+    ]
+
+
+def test_fn_args_parse():
     function_info = SoclessFunction()
     function_info.arguments = get_function_args_info(mock_handle_state_function())
+    expected_args = expected_parsed_args_for_mock_handle_state()
+    assert function_info.arguments == expected_args
 
-    return function_info
 
+# def test_get_function_args():
+#     mock_fn_def = mock_handle_state_function()
+#     expected_parsed_fn = mock_parsed_handle_state_socless_info()
 
-def test_get_function_args():
-    mock_fn_def = mock_handle_state_function()
-    expected_parsed_fn = mock_parsed_handle_state_socless_info()
+#     for x in expected_parsed_fn.arguments:
+#         print(x)
+#     # print(expected_parsed_fn)
+#     # print(expected_parsed_fn.__dict__)
+#     test = get_function_args_info(mock_fn_def)
+#     # print(mock_fn_def.args.__dict__)
+#     # for x in mock_fn_def.args.args:
+#     #     print(x.__dict__)
+#     # print()
+#     # print(mock_fn_def.args.__dict__)
+#     # for y in mock_fn_def.args.defaults:
+#     #     print(y)
+#     #     print(y.__dict__)
 
-    for x in expected_parsed_fn.arguments:
-        print(x)
-    # print(expected_parsed_fn)
-    # print(expected_parsed_fn.__dict__)
-    test = get_function_args_info(mock_fn_def)
-    # print(mock_fn_def.args.__dict__)
-    # for x in mock_fn_def.args.args:
-    #     print(x.__dict__)
-    # print()
-    # print(mock_fn_def.args.__dict__)
-    # for y in mock_fn_def.args.defaults:
-    #     print(y)
-    #     print(y.__dict__)
-
-    assert False
+#     assert False
 
 
 # def test_get_function_args():

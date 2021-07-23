@@ -3,7 +3,7 @@ import json
 from enum import Enum
 from pydantic import BaseModel
 from typing import Dict, List, Any, Optional, Union
-from src.constants import INTERACTION_ARG_NAMES, NO_DEFAULT_VALUE
+from src.constants import INTERACTION_ARG_NAMES
 from github.Repository import Repository
 from github.ContentFile import ContentFile
 from dataclasses import dataclass
@@ -41,9 +41,9 @@ class SoclessFunctionArgument(BaseModel):
     data_type: str = ""
     required: bool = False
     description: str = ""
-    placeholder: str = ""
+    placeholder: Any = ""
     internal: bool = False
-    default_value: Any = NO_DEFAULT_VALUE
+    default_value: Optional[Any]
 
 
 class SoclessFunction(BaseModel):
