@@ -4,6 +4,7 @@ from src.models import SoclessFunction, SoclessFunctionArgument
 from src.parse_python import (
     # convert_python_type_name_to_json_name,
     get_function_args_info,
+    socless_lambda_parser,
 )
 
 
@@ -119,6 +120,12 @@ def test_fn_args_parse():
     function_info.arguments = get_function_args_info(mock_handle_state_function())
     expected_args = expected_parsed_args_for_mock_handle_state()
     assert function_info.arguments == expected_args
+
+
+def test_socless_lambda_parser():
+    with open("tests/mock_files/mock_lambda_fn.py") as f:
+        python_file_as_string = f.read()
+    result = socless_lambda_parser(python_file_as_string)
 
 
 # def test_get_function_args():

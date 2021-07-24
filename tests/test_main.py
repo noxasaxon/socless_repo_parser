@@ -58,16 +58,14 @@ def test_parse_repo_names_as_comma_separated_string():
     repo_name_assertions(result, default_org, custom_org)
 
 
-"""NOTE: This test will interact with public github"""
+##### """NOTE: This test will interact with public github"""
+# def test_output_structure(mock_socless_info_output_as_json):
+#     mock_output = build_integration_classes_from_json(mock_socless_info_output_as_json)
+#     output = build_socless_info(
+#         "socless, socless-slack",
+#         default_org="twilio-labs",
+#         output_file_path="socless_info.json",
+#     )
 
-
-def test_output_structure(mock_socless_info_output_as_json):
-    mock_output = build_integration_classes_from_json(mock_socless_info_output_as_json)
-    output = build_socless_info(
-        "socless, socless-slack",
-        default_org="twilio-labs",
-        output_file_path="socless_info.json",
-    )
-
-    assert output == mock_output
-    assert output.json()
+#     assert output == mock_output
+#     assert output.json()
