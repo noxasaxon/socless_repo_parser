@@ -27,8 +27,35 @@ class FileExistence:
 class SoclessFunctionMeta(BaseModel):
     lambda_folder_name: str = ""  # check_user_in_channel,
     deployed_lambda_name: str = ""  # socless_slack_check_user_in_channel,
-    serverless_lambda_name: str = ""  # CheckIfUserInChannel,
+    serverless_lambda_name: str = ""  # CheckIfUserInChannel
     supported_in_playbook: bool = True
+
+
+# class SliceType(BaseModel):
+#     type_name: str
+#     items: List[str]
+
+#     def __repr__(self) -> str:
+#         items_as_string = ""
+#         for i, item in enumerate(self.items):
+#             if i == 0:
+#                 items_as_string += f"{item}"
+#             else:
+#                 items_as_string += f",{item}"
+#         return f"{self.type_name}<{items_as_string}>"
+
+#     def __eq__(self, o: object) -> bool:
+#         return str(self) == str(o)
+
+
+# class ArrayType(SliceType):
+#     type_name: str = "array"
+#     items: List[Union[str, SliceType]]
+
+
+# class UnionType(SliceType):
+#     type_name = "union"
+#     items: List[Union[str, ArrayType]]
 
 
 class JsonDataType(str, Enum):
@@ -36,13 +63,24 @@ class JsonDataType(str, Enum):
     BOOLEAN = "boolean"
     NUMBER = "number"
     OBJECT = "object"
-    ARRAY = "array<>"
     NULL = "null"
+    ARRAY = "array<>"
+    UNION = "union<>"
 
 
 class SoclessFunctionArgument(BaseModel):
+    """
+    data_type: "string"|"number"|"boolean"|"object"|"array<>"|"array<data_type>"|"null"
+        If a type hint or default value is specified, what (JSON) data type is it.
+    required: # Does this argument have a default value.
+    description: # TODO: Not yet implemented.
+    placeholder: # TODO: Not fully implemented, but `placeholder` is currently populated with
+            the default_value (if default_value is not empty)
+    internal: # Custom field for marking args not used in `playbook.json`, such as `context`. TODO: Needs better logic
+    default_value: # The default value for a given arg (if provided.) Ex: def myfn(my_arg: str = "a default")"""
+
     name: str = ""
-    data_type: str = ""
+    data_type: Union[JsonDataType, str] = JsonDataType.NULL
     required: bool = False
     description: str = ""
     placeholder: Any = ""

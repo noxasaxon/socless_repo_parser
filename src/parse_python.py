@@ -136,7 +136,7 @@ def convert_python_hints_to_json_type_hints(arg_annotation_obj: ast.expr) -> str
                     f"no parsing implemented for Subscript type of: {typing_type_name} \n {arg_annotation_obj.__dict__}"
                 )
         elif isinstance(arg_annotation_obj, type(None)):
-            return "null"
+            return JsonDataType.NULL
         elif isinstance(arg_annotation_obj, ast.Tuple):
             tuple_types = [
                 convert_python_hints_to_json_type_hints(x)
@@ -192,7 +192,10 @@ def get_function_args_info(node: ast.FunctionDef) -> List[SoclessFunctionArgumen
         )
 
         # attempt to infer type for unhinted args with default values
-        if arg_info.data_type == "null" and arg_info.default_value is not None:
+        if (
+            arg_info.data_type == JsonDataType.NULL
+            and arg_info.default_value is not None
+        ):
             arg_info.data_type = convert_python_primitive_name_to_json_primitive_name(
                 str(type(arg_info.default_value).__name__)
             )

@@ -20,8 +20,9 @@ def tester(no_type_info_test, str_test: str, list_test: list, dict_test: dict, i
     raise NotImplementedError("No function definition in mock ast data")
 
 
-def expected_parsed_args_for_mock_handle_state() -> List[SoclessFunctionArgument]:
-    return [
+def expected_parsed_fn_for_mock_handle_state() -> SoclessFunction:
+    mock_function = SoclessFunction()
+    mock_function.arguments = [
         SoclessFunctionArgument(
             name="no_type_info_test",
             data_type="null",
@@ -113,13 +114,14 @@ def expected_parsed_args_for_mock_handle_state() -> List[SoclessFunctionArgument
             default_value=[],
         ),
     ]
+    return mock_function
 
 
 def test_fn_args_parse():
     function_info = SoclessFunction()
     function_info.arguments = get_function_args_info(mock_handle_state_function())
-    expected_args = expected_parsed_args_for_mock_handle_state()
-    assert function_info.arguments == expected_args
+    expected_fn = expected_parsed_fn_for_mock_handle_state()
+    assert function_info.arguments == expected_fn.arguments
 
 
 def test_socless_lambda_parser():
