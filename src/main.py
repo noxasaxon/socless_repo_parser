@@ -7,35 +7,38 @@ from src.github import (
     fetch_raw_function,
     fetch_raw_serverless_yml,
 )
-from src.models import AllIntegrations, IntegrationFamily
+from src.models import AllIntegrations, IntegrationFamily, RepoNameInfo
+from urllib.parse import urlparse
 
 
 def build_socless_info(
     repos: Union[List, str],
-    org_name="twilo-labs",
+    default_org="twilo-labs",
     ghe=False,
     output_file_path="socless_info",
 ) -> AllIntegrations:
-    if isinstance(repos, str):
-        repos = repos.split(",")
-    repos = [name.strip() for name in repos]
+    repos = parse_repo_names(repos, default_org=default_org)
 
     print(f"fetching socless info for: {repos}")
 
     all_integrations = AllIntegrations()
-    for repo_name in repos:
+    for repo_name_obj in repos:
         integration_family = IntegrationFamily()
 
         # TODO: make this pull from serverless 'service' name
-        integration_family.meta.integration_family = repo_name
+        integration_family.meta.integration_family = repo_name_obj.name
         # TODO: create get_repo_url
         # integration_family.meta.repo_url = get_repo_url(repo_name, org_name, ghe=ghe)
 
         # get serverless.yml function info, names
-        raw_yml = fetch_raw_serverless_yml(repo_name, org_name, ghe=ghe)
+        raw_yml = fetch_raw_serverless_yml(
+            repo_name_obj.name, repo_name_obj.org, ghe=ghe
+        )
         all_serverless_fn_meta = parse_yml(raw_yml)
 
-        for folder_data in get_lambda_folders_data(repo_name, org_name, ghe=ghe):
+        for folder_data in get_lambda_folders_data(
+            repo_name_obj.name, repo_name_obj.org, ghe=ghe
+        ):
             dir_name = folder_data["name"]
             if dir_name not in all_serverless_fn_meta.functions:
                 print(
@@ -43,7 +46,9 @@ def build_socless_info(
                 )
                 continue
 
-            raw_function = fetch_raw_function(folder_data, repo_name, org_name, ghe=ghe)
+            raw_function = fetch_raw_function(
+                folder_data, repo_name_obj.name, repo_name_obj.org, ghe=ghe
+            )
             function_info = socless_lambda_parser(raw_function)
 
             function_info.meta = all_serverless_fn_meta.functions[dir_name]
@@ -60,3 +65,33 @@ def build_socless_info(
         print(json.dumps(all_integrations.dict()))
 
     return all_integrations
+
+
+def parse_repo_names(
+    cli_repo_input: Union[List, str], default_org=""
+) -> List[RepoNameInfo]:
+    """Parse CLI string into a list of repo names and orgs. If no org is supplied, use the default org.
+
+    Example repo names:
+        "socless" (will use the default_org)
+        "noxasaxon/socless"
+        "https://github.com/noxasaxon/socless"
+    """
+    if isinstance(cli_repo_input, str):
+        cli_repo_input = cli_repo_input.split(",")
+    repos = [name.strip() for name in cli_repo_input]
+
+    all_repos = []
+    for repo in repos:
+        parsed = repo_path = urlparse(repo)
+        repo_path = parsed.path
+        # if supplied with a full url, path will have a leading /
+        repo_path = repo_path[1:] if repo_path.startswith("/") else repo_path
+        repo_path = repo_path.split("/")
+        if len(repo_path) < 2:
+            repo_name_info = RepoNameInfo(name=repo_path[0], org=default_org)
+        else:
+            repo_name_info = RepoNameInfo(name=repo_path[1], org=repo_path[0])
+        all_repos.append(repo_name_info)
+
+    return all_repos

@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 socless_info.json
 gitignored/*
+.vscode/settings.json
