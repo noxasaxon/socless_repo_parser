@@ -31,9 +31,13 @@ class SoclessFunctionMeta(BaseModel):
     supported_in_playbook: bool = True
 
 
-class SoclessResourceType(str, Enum):
-    SOCLESS_TASK = "socless_task"
-    SOCLESS_INTERACTION = "socless_interaction"
+class JsonDataType(str, Enum):
+    STRING = "string"
+    BOOLEAN = "boolean"
+    NUMBER = "number"
+    OBJECT = "object"
+    ARRAY = "array<>"
+    NULL = "null"
 
 
 class SoclessFunctionArgument(BaseModel):
@@ -44,6 +48,11 @@ class SoclessFunctionArgument(BaseModel):
     placeholder: Any = ""
     internal: bool = False
     default_value: Optional[Any]
+
+
+class SoclessResourceType(str, Enum):
+    SOCLESS_TASK = "socless_task"
+    SOCLESS_INTERACTION = "socless_interaction"
 
 
 class SoclessFunction(BaseModel):

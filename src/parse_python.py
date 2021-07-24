@@ -1,7 +1,7 @@
 import ast
 from typing import Dict, List
 from src.constants import HANDLE_STATE_FN_NAME, INTERNAL_ARG_NAMES
-from src.models import SoclessFunction, SoclessFunctionArgument
+from src.models import JsonDataType, SoclessFunction, SoclessFunctionArgument
 
 
 def custom_ast_unpack(node):
@@ -82,21 +82,21 @@ def get_return_statements(parent_node: ast.FunctionDef):
     return return_statements
 
 
-def convert_python_primitive_name_to_json_name(type_name: str) -> str:
+def convert_python_primitive_name_to_json_primitive_name(type_name: str) -> str:
     if type_name == str.__name__:
-        return "string"
+        return JsonDataType.STRING
     elif type_name == bool.__name__:
-        return "boolean"
+        return JsonDataType.BOOLEAN
     elif type_name == int.__name__:
-        return "number"
+        return JsonDataType.NUMBER
     elif type_name == dict.__name__:
-        return "object"
+        return JsonDataType.OBJECT
     elif type_name == list.__name__:
-        return "array<>"
+        return JsonDataType.ARRAY
     elif type_name == "NoneType":
-        return "null"
+        return JsonDataType.NULL
     elif type_name == "None":
-        return "null"
+        return JsonDataType.NULL
     else:
         raise NotImplementedError(
             f"No json type conversion configured for python type: {type_name}"
@@ -107,7 +107,7 @@ def convert_python_hints_to_json_type_hints(arg_annotation_obj: ast.expr) -> str
     try:
         # basic types
         py_type_name = str(arg_annotation_obj.id)  # type:ignore
-        return convert_python_primitive_name_to_json_name(py_type_name)
+        return convert_python_primitive_name_to_json_primitive_name(py_type_name)
     except AttributeError:
         # custom types including type hints
         if isinstance(arg_annotation_obj, ast.Subscript):
@@ -150,17 +150,37 @@ def convert_python_hints_to_json_type_hints(arg_annotation_obj: ast.expr) -> str
 
 
 def get_function_args_info(node: ast.FunctionDef) -> List[SoclessFunctionArgument]:
+    """Parse info for all arguments from a given function.
+    For a given AST function definition node, returns a list of SoclessFunctionArgument.
+
+    Each SoclessFunctionArgument includes:
+        name: str
+        data_type: str :: "string"|"number"|"boolean"|"object"|"array<>"|"array<data_type>"|"null"
+            If a type hint or default value is specified, what (JSON) data type is it.
+        required: bool
+            Does this argument have a default value.
+        description: str
+            TODO: Not yet implemented.
+        placeholder: Any
+            TODO: Not fully implemented, but `placeholder` is currently populated with
+                the default_value (if default_value is not empty)
+        internal: bool = False
+            Custom field for marking args not used in `playbook.json`, such as `context`. TODO: Needs better logic
+        default_value: Optional[Any]
+            The default value for a given arg (if provided.) Ex: def myfn(my_arg: str = "a default")
+
+    """
     function_args: Dict[str, SoclessFunctionArgument] = {}
 
-    defaults_list_offset = len(node.args.args) - len(node.args.defaults)
+    default_args_list_offset = len(node.args.args) - len(node.args.defaults)
 
     # get all function arguments
     for i, arg in enumerate(node.args.args):
         arg_info = SoclessFunctionArgument()
-        if i >= defaults_list_offset:
+        if i >= default_args_list_offset:
             arg_info.required = False
             # find the corresponding default for this optional arg
-            this_default = node.args.defaults[i - defaults_list_offset]
+            this_default = node.args.defaults[i - default_args_list_offset]
             arg_info.default_value = custom_ast_unpack(this_default)
 
         else:
@@ -173,7 +193,7 @@ def get_function_args_info(node: ast.FunctionDef) -> List[SoclessFunctionArgumen
 
         # attempt to infer type for unhinted args with default values
         if arg_info.data_type == "null" and arg_info.default_value is not None:
-            arg_info.data_type = convert_python_primitive_name_to_json_name(
+            arg_info.data_type = convert_python_primitive_name_to_json_primitive_name(
                 str(type(arg_info.default_value).__name__)
             )
 
@@ -188,11 +208,6 @@ def get_function_args_info(node: ast.FunctionDef) -> List[SoclessFunctionArgumen
             arg_info.internal = True
 
         function_args[arg_info.name] = arg_info
-
-    # check if any args have default values
-    for name_of_default_arg in node.args.defaults:
-        if name_of_default_arg in function_args:
-            function_args[name_of_default_arg].required = False
 
     # TODO: figure out how to parse the docstring effectively for arg descriptions
     # print(ast.get_docstring(node))
