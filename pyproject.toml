@@ -25,7 +25,7 @@ isolated_build = True
 
 [testenv]
 commands =
-    pytest -vv
+    pytest -vv {posargs}
     
 setenv =
     PIP_INDEX_URL = {env:PIP_INDEX_URL:https://pypi.org/simple/}
