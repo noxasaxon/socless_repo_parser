@@ -2,7 +2,7 @@
 Take a list of socless repo names and query the github api for their raw lambda .py files and serverless.yml, parsing key elements into a single json output to build a catalog of all available lambda functions in the ecosystem.
 
 ## Usage
-
+REQUIRES Python 3.8(.10) as tree_sitter will not work otherwise
 By default, output is saved to `./socless_info.json`
 
 ### For open source:
