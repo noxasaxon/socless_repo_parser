@@ -97,6 +97,8 @@ def convert_python_primitive_name_to_json_primitive_name(type_name: str) -> str:
         return JsonDataType.NULL
     elif type_name == "None":
         return JsonDataType.NULL
+    elif type_name == "Any":
+        return JsonDataType.ANY
     else:
         raise NotImplementedError(
             f"No json type conversion configured for python type: {type_name}"
@@ -233,6 +235,7 @@ def socless_lambda_parser(py_file_string) -> SoclessFunction:
     function_info = SoclessFunction()
     function_info.arguments = get_function_args_info(handle_state_node)
     function_info.return_statements = get_return_statements(handle_state_node)
+    function_info.supports_kwargs = True if handle_state_node.args.kwarg else False
     function_info.check_and_set_supported_in_playbook()
 
     return function_info
