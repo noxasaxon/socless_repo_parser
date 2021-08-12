@@ -70,15 +70,18 @@ class JsonDataType(str, Enum):
 
 
 class SoclessFunctionArgument(BaseModel):
-    """
-    data_type: "string"|"number"|"boolean"|"object"|"array<>"|"array<data_type>"|"null"
+    """Data about an argument in `handle_state()`.
+
+    `data_type` : `JsonDataType` Enum - `"string"|"number"|"boolean"|"object"|"array<>"|"array<data_type>"|"null"`
         If a type hint or default value is specified, what (JSON) data type is it.
-    required: # Does this argument have a default value.
-    description: # TODO: Not yet implemented.
-    placeholder: # TODO: Not fully implemented, but `placeholder` is currently populated with
-            the default_value (if default_value is not empty)
-    internal: # Custom field for marking args not used in `playbook.json`, such as `context`. TODO: Needs better logic
-    default_value: # The default value for a given arg (if provided.) Ex: def myfn(my_arg: str = "a default")"""
+    `required` : True if this argument does NOT have a default value.
+    `description` : # TODO: Not yet implemented.
+    `placeholder` : # TODO: Not fully implemented,
+        but `placeholder` is currently populated with the default_value (if default_value is not empty)
+    `internal` : # Custom field for marking args not used in `playbook.json`, such as `context`. TODO: Needs better logic
+    `default_value` : # The default value for a given arg (if provided.) Ex: def myfn(my_arg: str = "a default")
+    ```
+    """
 
     name: str = ""
     data_type: Union[JsonDataType, str] = JsonDataType.NULL

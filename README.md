@@ -57,9 +57,11 @@ python3 main.py "socless, socless-slack" --org-name="<github_organization>" --gh
                             "required": true,
                             "description": "",
                             "placeholder": "",
+                            "internal": false,
                             "default_value": ""
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "ok": true
@@ -82,6 +84,19 @@ python3 main.py "socless, socless-slack" --org-name="<github_organization>" --gh
 }
 
 ```
+
+Possible values for argument `data_type`:
+```json
+- "string"
+- "boolean"
+- "number"
+- "object"
+- "null"
+- "array<>"
+- "union<>"
+- "any"
+```
+
 
 # TODO
 - [X] convert to lists instead of dicts for output
