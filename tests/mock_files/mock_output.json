@@ -8,6 +8,30 @@
             "functions": [
                 {
                     "meta": {
+                        "lambda_folder_name": "_merge_parallel_output",
+                        "deployed_lambda_name": "_socless_merge_parallel_output",
+                        "serverless_lambda_name": "MergeParallelOutput",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "arguments": [],
+                    "supports_kwargs": false,
+                    "return_statements": []
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "_save_msg_resp_token",
+                        "deployed_lambda_name": "_socless_save_msg_resp_token",
+                        "serverless_lambda_name": "SaveMessageResponseToken",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "arguments": [],
+                    "supports_kwargs": false,
+                    "return_statements": []
+                },
+                {
+                    "meta": {
                         "lambda_folder_name": "_setup_global_state_for_direct_invoked_playbook",
                         "deployed_lambda_name": "_socless_setup_global_state_for_direct_invoked_playbook",
                         "serverless_lambda_name": "SetupGlobalStateForDirectInvokedPlaybook",
@@ -15,6 +39,7 @@
                     },
                     "resource_type": "socless_task",
                     "arguments": [],
+                    "supports_kwargs": false,
                     "return_statements": []
                 },
                 {
@@ -26,6 +51,7 @@
                     },
                     "resource_type": "socless_task",
                     "arguments": [],
+                    "supports_kwargs": false,
                     "return_statements": []
                 },
                 {
@@ -39,7 +65,7 @@
                     "arguments": [
                         {
                             "name": "key",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -48,7 +74,7 @@
                         },
                         {
                             "name": "value",
-                            "data_type": "null",
+                            "data_type": "any",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -56,6 +82,7 @@
                             "default_value": null
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": []
                 },
                 {
@@ -122,6 +149,7 @@
                             "default_value": false
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": []
                 },
                 {
@@ -144,7 +172,7 @@
                         },
                         {
                             "name": "entries",
-                            "data_type": "null",
+                            "data_type": "any",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -152,6 +180,7 @@
                             "default_value": null
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "cached": "entries"
@@ -178,7 +207,7 @@
                         },
                         {
                             "name": "state_name",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -187,7 +216,7 @@
                         },
                         {
                             "name": "start",
-                            "data_type": "null",
+                            "data_type": "number",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -196,7 +225,7 @@
                         },
                         {
                             "name": "delta",
-                            "data_type": "null",
+                            "data_type": "number",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -213,6 +242,7 @@
                             "default_value": "up"
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "status": "Error",
@@ -229,6 +259,7 @@
                     },
                     "resource_type": "socless_task",
                     "arguments": [],
+                    "supports_kwargs": false,
                     "return_statements": []
                 },
                 {
@@ -286,17 +317,7 @@
                             "default_value": []
                         }
                     ],
-                    "return_statements": []
-                },
-                {
-                    "meta": {
-                        "lambda_folder_name": "merge_parallel_output",
-                        "deployed_lambda_name": "_socless_merge_parallel_output",
-                        "serverless_lambda_name": "MergeParallelOutput",
-                        "supported_in_playbook": true
-                    },
-                    "resource_type": "socless_task",
-                    "arguments": [],
+                    "supports_kwargs": true,
                     "return_statements": []
                 },
                 {
@@ -307,8 +328,23 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
-                    "arguments": [],
-                    "return_statements": []
+                    "arguments": [
+                        {
+                            "name": "input",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "output": "input"
+                        }
+                    ]
                 },
                 {
                     "meta": {
@@ -321,7 +357,7 @@
                     "arguments": [
                         {
                             "name": "key",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -329,6 +365,7 @@
                             "default_value": null
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "exists": true,
@@ -342,17 +379,6 @@
                 },
                 {
                     "meta": {
-                        "lambda_folder_name": "save_msg_resp_token",
-                        "deployed_lambda_name": "_socless_save_msg_resp_token",
-                        "serverless_lambda_name": "SaveMessageResponseToken",
-                        "supported_in_playbook": true
-                    },
-                    "resource_type": "socless_task",
-                    "arguments": [],
-                    "return_statements": []
-                },
-                {
-                    "meta": {
                         "lambda_folder_name": "set_investigation_status",
                         "deployed_lambda_name": "socless_set_investigation_status",
                         "serverless_lambda_name": "SetInvestigationStatus",
@@ -362,7 +388,7 @@
                     "arguments": [
                         {
                             "name": "investigation_id",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -371,7 +397,7 @@
                         },
                         {
                             "name": "status",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -379,6 +405,7 @@
                             "default_value": null
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "result": "failure",
@@ -406,6 +433,7 @@
                     },
                     "resource_type": "socless_task",
                     "arguments": [],
+                    "supports_kwargs": false,
                     "return_statements": []
                 }
             ]
@@ -416,6 +444,53 @@
                 "integration_family": "socless-slack"
             },
             "functions": [
+                {
+                    "meta": {
+                        "lambda_folder_name": "_slack_endpoint",
+                        "deployed_lambda_name": "_socless_slack_endpoint",
+                        "serverless_lambda_name": "SlackEndpoint",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "arguments": [],
+                    "supports_kwargs": false,
+                    "return_statements": []
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "_update_cached_users",
+                        "deployed_lambda_name": "socless_slack_update_cached_users",
+                        "serverless_lambda_name": "UpdateCachedUsers",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "arguments": [
+                        {
+                            "name": "slack_profile_key",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "display_name",
+                            "internal": false,
+                            "default_value": "display_name"
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "finished": true
+                        }
+                    ]
+                },
                 {
                     "meta": {
                         "lambda_folder_name": "check_user_in_channel",
@@ -442,8 +517,18 @@
                             "placeholder": "",
                             "internal": false,
                             "default_value": null
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "ok": true
@@ -464,7 +549,7 @@
                     "arguments": [
                         {
                             "name": "channel_name",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -473,7 +558,7 @@
                         },
                         {
                             "name": "user_ids",
-                            "data_type": "array<>",
+                            "data_type": "array<string>",
                             "required": false,
                             "description": "",
                             "placeholder": "",
@@ -488,8 +573,18 @@
                             "placeholder": "",
                             "internal": false,
                             "default_value": false
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "ok": true,
@@ -534,8 +629,18 @@
                             "placeholder": "",
                             "internal": false,
                             "default_value": false
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "result": "false"
@@ -553,7 +658,7 @@
                     "arguments": [
                         {
                             "name": "channel_id",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -571,14 +676,24 @@
                         },
                         {
                             "name": "user_ids",
-                            "data_type": "array<>",
+                            "data_type": "array<string>",
                             "required": false,
                             "description": "",
                             "placeholder": "",
                             "internal": false,
                             "default_value": []
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "ok": true,
@@ -594,7 +709,18 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
-                    "arguments": [],
+                    "arguments": [
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "channels": "response"
@@ -621,7 +747,7 @@
                         },
                         {
                             "name": "target_type",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -630,7 +756,7 @@
                         },
                         {
                             "name": "target",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -639,7 +765,7 @@
                         },
                         {
                             "name": "text",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -690,8 +816,18 @@
                             "placeholder": true,
                             "internal": false,
                             "default_value": true
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "response": "resp",
@@ -720,7 +856,7 @@
                         },
                         {
                             "name": "target",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -729,7 +865,7 @@
                         },
                         {
                             "name": "target_type",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -738,7 +874,7 @@
                         },
                         {
                             "name": "message_template",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -771,8 +907,18 @@
                             "placeholder": true,
                             "internal": false,
                             "default_value": true
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "response": "resp",
@@ -801,7 +947,7 @@
                         },
                         {
                             "name": "trigger_id",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -810,7 +956,7 @@
                         },
                         {
                             "name": "title",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -819,7 +965,7 @@
                         },
                         {
                             "name": "elements",
-                            "data_type": "null",
+                            "data_type": "array<>",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -852,8 +998,18 @@
                             "placeholder": "n/a",
                             "internal": false,
                             "default_value": "n/a"
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "response": "json_resp",
@@ -881,7 +1037,7 @@
                         },
                         {
                             "name": "message_template",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -890,7 +1046,7 @@
                         },
                         {
                             "name": "target",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -899,7 +1055,7 @@
                         },
                         {
                             "name": "target_type",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -914,8 +1070,18 @@
                             "placeholder": true,
                             "internal": false,
                             "default_value": true
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "response": "resp",
@@ -934,7 +1100,7 @@
                     "arguments": [
                         {
                             "name": "channel_id",
-                            "data_type": "null",
+                            "data_type": "string",
                             "required": true,
                             "description": "",
                             "placeholder": "",
@@ -949,48 +1115,22 @@
                             "placeholder": "",
                             "internal": false,
                             "default_value": null
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
                         }
                     ],
+                    "supports_kwargs": false,
                     "return_statements": [
                         {
                             "ok": true,
                             "topic": "topic"
-                        }
-                    ]
-                },
-                {
-                    "meta": {
-                        "lambda_folder_name": "slack_endpoint",
-                        "deployed_lambda_name": "_socless_slack_endpoint",
-                        "serverless_lambda_name": "SlackEndpoint",
-                        "supported_in_playbook": true
-                    },
-                    "resource_type": "socless_task",
-                    "arguments": [],
-                    "return_statements": []
-                },
-                {
-                    "meta": {
-                        "lambda_folder_name": "update_cached_users",
-                        "deployed_lambda_name": "socless_slack_update_cached_users",
-                        "serverless_lambda_name": "UpdateCachedUsers",
-                        "supported_in_playbook": true
-                    },
-                    "resource_type": "socless_task",
-                    "arguments": [
-                        {
-                            "name": "slack_profile_key",
-                            "data_type": "string",
-                            "required": false,
-                            "description": "",
-                            "placeholder": "display_name",
-                            "internal": false,
-                            "default_value": "display_name"
-                        }
-                    ],
-                    "return_statements": [
-                        {
-                            "finished": true
                         }
                     ]
                 }

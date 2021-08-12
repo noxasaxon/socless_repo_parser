@@ -8,6 +8,8 @@ from src.models import build_integration_classes_from_json
 #     raise AssertionError()
 
 # using pytest fixture from .conftest
+
+
 def test_generate_dataclasses_from_json(mock_socless_info_output_as_json):  # noqa: F811
     assert mock_socless_info_output_as_json == build_integration_classes_from_json(
         mock_socless_info_output_as_json

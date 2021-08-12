@@ -66,6 +66,7 @@ class JsonDataType(str, Enum):
     NULL = "null"
     ARRAY = "array<>"
     UNION = "union<>"
+    ANY = "any"
 
 
 class SoclessFunctionArgument(BaseModel):
@@ -97,6 +98,7 @@ class SoclessFunction(BaseModel):
     meta: SoclessFunctionMeta = SoclessFunctionMeta()
     resource_type: SoclessResourceType = SoclessResourceType.SOCLESS_TASK
     arguments: List[SoclessFunctionArgument] = []
+    supports_kwargs: bool = False
     return_statements: List[Dict[str, Any]] = []
 
     def check_and_set_supported_in_playbook(self):

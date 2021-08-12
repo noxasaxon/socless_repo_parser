@@ -14,6 +14,7 @@ def handle_state(
     union_test: Union[str, list] = [],
     optional_test: Optional[str] = "",
     list_typing_test: List[str] = [],
+    **kwargs
 ):
     """Test file for the python parser"""
 
