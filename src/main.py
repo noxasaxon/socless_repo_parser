@@ -1,6 +1,6 @@
 import json, os
 from typing import List, Union
-from src.parse_python import socless_lambda_parser
+from src.parse_python import build_parsed_function
 from src.parse_yml import parse_yml
 from src.github import (
     get_lambda_folders_data,
@@ -49,9 +49,11 @@ def build_socless_info(
             raw_function = fetch_raw_function(
                 folder_data, repo_name_obj.name, repo_name_obj.org, ghe=ghe
             )
-            function_info = socless_lambda_parser(raw_function)
 
-            function_info.meta = all_serverless_fn_meta.functions[dir_name]
+            function_info = build_parsed_function(
+                meta_from_yml=all_serverless_fn_meta.functions[dir_name],
+                py_file_string=raw_function,
+            )
 
             integration_family.functions.append(function_info)
         all_integrations.integrations.append(integration_family)

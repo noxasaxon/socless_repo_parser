@@ -1,7 +1,16 @@
 import ast
-from typing import Dict, List
+from typing import ByteString, Dict, List, Union
 from src.constants import HANDLE_STATE_FN_NAME, INTERNAL_ARG_NAMES
-from src.models import JsonDataType, SoclessFunction, SoclessFunctionArgument
+from src.models import (
+    JsonDataType,
+    SoclessFunction,
+    SoclessFunctionArgument,
+    SoclessFunctionMeta,
+)
+
+
+class ParsePythonError(Exception):
+    pass
 
 
 def custom_ast_unpack(node):
@@ -220,22 +229,53 @@ def get_function_args_info(node: ast.FunctionDef) -> List[SoclessFunctionArgumen
     return [x for x in function_args.values()]
 
 
-def socless_lambda_parser(py_file_string) -> SoclessFunction:
+def find_handle_state_in_node(node: ast.stmt) -> Union[ast.FunctionDef, None]:
+    if isinstance(node, ast.FunctionDef):
+        if node.name == HANDLE_STATE_FN_NAME:
+            return node
+        else:
+            for sub_node in node.body:
+                found = find_handle_state_in_node(sub_node)
+                if found:
+                    return found
+    else:
+        return None
+
+
+def get_handle_state(py_file_string) -> ast.FunctionDef:
     module = ast.parse(py_file_string)
 
-    try:
-        handle_state_node = [
-            node
-            for node in module.body
-            if isinstance(node, ast.FunctionDef) and node.name == HANDLE_STATE_FN_NAME
-        ][0]
-    except IndexError:
-        return SoclessFunction()
+    for node in module.body:
+        found = find_handle_state_in_node(node)
+        if found:
+            return found
+    raise ParsePythonError("No handle_state found in this function.")
+
+
+def socless_lambda_file_parser(py_file_string) -> SoclessFunction:
+    # raises ParsePythonError if no handle_state_found
+    handle_state_node = get_handle_state(py_file_string)
 
     function_info = SoclessFunction()
     function_info.arguments = get_function_args_info(handle_state_node)
     function_info.return_statements = get_return_statements(handle_state_node)
     function_info.supports_kwargs = True if handle_state_node.args.kwarg else False
-    function_info.check_and_set_supported_in_playbook()
+    function_info.check_and_set_resource_type()
 
     return function_info
+
+
+def build_parsed_function(
+    meta_from_yml: SoclessFunctionMeta, py_file_string: ByteString
+) -> SoclessFunction:
+    try:
+        parsed_fn = socless_lambda_file_parser(py_file_string)
+    except ParsePythonError:
+        unsupported_fn = SoclessFunction(meta=meta_from_yml)
+        # manually set it here, because we know it doesn't have `handle_state`
+        unsupported_fn.meta.supported_in_playbook = False
+        return unsupported_fn
+    else:
+        parsed_fn.meta = meta_from_yml
+        parsed_fn.check_and_set_supported_in_playbook()
+        return parsed_fn

@@ -14,7 +14,8 @@ def handle_state(
     union_test: Union[str, list] = [],
     optional_test: Optional[str] = "",
     list_typing_test: List[str] = [],
-    **kwargs
+    test_if_hint_overrides_default_none_type: List[str] = None,
+    **kwargs,
 ):
     """Test file for the python parser"""
 
