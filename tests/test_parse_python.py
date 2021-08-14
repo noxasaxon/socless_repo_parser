@@ -1,8 +1,9 @@
 import ast
-from src.models import SoclessFunction, SoclessFunctionArgument
+from src.models import JsonDataType, SoclessFunction, SoclessFunctionArgument
 from src.parse_python import (
     get_function_args_info,
-    socless_lambda_parser,
+    get_handle_state,
+    socless_lambda_file_parser,
 )
 
 
@@ -16,6 +17,18 @@ def tester(no_type_info_test, str_test: str, list_test: list, dict_test: dict, i
         if isinstance(node, ast.FunctionDef):
             return node
     raise NotImplementedError("No function definition in mock ast data")
+
+
+def mock_lambda_file() -> str:
+    with open("tests/mock_files/mock_lambda.py") as f:
+        python_file_as_string = f.read()
+    return python_file_as_string
+
+
+def mock_lambda_file_with_nested_handle_state() -> str:
+    with open("tests/mock_files/mock_lambda_with_nested_handle_state.py") as f:
+        python_file_as_string = f.read()
+    return python_file_as_string
 
 
 def expected_parsed_fn_for_mock_handle_state() -> SoclessFunction:
@@ -122,7 +135,25 @@ def test_fn_args_parse():
     assert function_info.arguments == expected_fn.arguments
 
 
-def test_socless_lambda_parser():
-    with open("tests/mock_files/mock_lambda_fn.py") as f:
-        python_file_as_string = f.read()
-    _ = socless_lambda_parser(python_file_as_string)
+def test_socless_lambda_file_parser():
+    parsed = socless_lambda_file_parser(mock_lambda_file())
+
+    assert parsed.supports_kwargs
+
+    for arg in parsed.arguments:
+        if arg.name == "str_test":
+            assert arg.data_type == JsonDataType.STRING
+
+        if arg.name == "test_if_hint_overrides_default_none_type":
+            assert arg.data_type != JsonDataType.NULL  # same as JsonDataType.NULL
+            assert "array" in arg.data_type
+
+    assert len(parsed.arguments) == 11
+
+
+def test_socless_lambda_file_parser_nested_handle_state_fn():
+    parsed = socless_lambda_file_parser(mock_lambda_file_with_nested_handle_state())
+
+    assert not parsed.supports_kwargs
+    assert len(parsed.arguments) == 7
+    assert len([x for x in parsed.arguments if not x.internal]) == 6

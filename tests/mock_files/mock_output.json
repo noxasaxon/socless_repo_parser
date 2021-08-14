@@ -11,7 +11,7 @@
                         "lambda_folder_name": "_merge_parallel_output",
                         "deployed_lambda_name": "_socless_merge_parallel_output",
                         "serverless_lambda_name": "MergeParallelOutput",
-                        "supported_in_playbook": true
+                        "supported_in_playbook": false
                     },
                     "resource_type": "socless_task",
                     "arguments": [],
@@ -23,7 +23,7 @@
                         "lambda_folder_name": "_save_msg_resp_token",
                         "deployed_lambda_name": "_socless_save_msg_resp_token",
                         "serverless_lambda_name": "SaveMessageResponseToken",
-                        "supported_in_playbook": true
+                        "supported_in_playbook": false
                     },
                     "resource_type": "socless_task",
                     "arguments": [],
@@ -35,7 +35,7 @@
                         "lambda_folder_name": "_setup_global_state_for_direct_invoked_playbook",
                         "deployed_lambda_name": "_socless_setup_global_state_for_direct_invoked_playbook",
                         "serverless_lambda_name": "SetupGlobalStateForDirectInvokedPlaybook",
-                        "supported_in_playbook": true
+                        "supported_in_playbook": false
                     },
                     "resource_type": "socless_task",
                     "arguments": [],
@@ -47,7 +47,7 @@
                         "lambda_folder_name": "_ship_playbook_logs",
                         "deployed_lambda_name": "_socless_ship_playbook_logs",
                         "serverless_lambda_name": "SavePlaybookExecutionLogs",
-                        "supported_in_playbook": true
+                        "supported_in_playbook": false
                     },
                     "resource_type": "socless_task",
                     "arguments": [],
@@ -258,9 +258,77 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
-                    "arguments": [],
+                    "arguments": [
+                        {
+                            "name": "event_context",
+                            "data_type": "null",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": null
+                        },
+                        {
+                            "name": "event_type",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "details",
+                            "data_type": "array<object>",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "playbook",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "dedup_keys",
+                            "data_type": "array<>",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": []
+                        },
+                        {
+                            "name": "data_types",
+                            "data_type": "object",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": {}
+                        },
+                        {
+                            "name": "add_to_details",
+                            "data_type": "object",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": {}
+                        }
+                    ],
                     "supports_kwargs": false,
-                    "return_statements": []
+                    "return_statements": [
+                        {
+                            "completed": true
+                        }
+                    ]
                 },
                 {
                     "meta": {
@@ -432,7 +500,44 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
-                    "arguments": [],
+                    "arguments": [
+                        {
+                            "name": "context",
+                            "data_type": "object",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": null
+                        },
+                        {
+                            "name": "investigation_escalated",
+                            "data_type": "boolean",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "findings",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "metadata",
+                            "data_type": "object",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": {}
+                        }
+                    ],
                     "supports_kwargs": false,
                     "return_statements": []
                 }
@@ -449,7 +554,7 @@
                         "lambda_folder_name": "_slack_endpoint",
                         "deployed_lambda_name": "_socless_slack_endpoint",
                         "serverless_lambda_name": "SlackEndpoint",
-                        "supported_in_playbook": true
+                        "supported_in_playbook": false
                     },
                     "resource_type": "socless_task",
                     "arguments": [],
@@ -461,7 +566,7 @@
                         "lambda_folder_name": "_update_cached_users",
                         "deployed_lambda_name": "socless_slack_update_cached_users",
                         "serverless_lambda_name": "UpdateCachedUsers",
-                        "supported_in_playbook": true
+                        "supported_in_playbook": false
                     },
                     "resource_type": "socless_task",
                     "arguments": [

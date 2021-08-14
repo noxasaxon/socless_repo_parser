@@ -30,6 +30,28 @@ class SoclessFunctionMeta(BaseModel):
     serverless_lambda_name: str = ""  # CheckIfUserInChannel
     supported_in_playbook: bool = True
 
+    def check_supported_in_playbook_via_meta(self) -> bool:
+        """Does not check function body if it has `handle_state`."""
+        if not all(
+            [
+                self.deployed_lambda_name,
+                self.lambda_folder_name,
+                self.serverless_lambda_name,
+            ]
+        ):
+            raise Exception(
+                "SoclessFunctionMeta names must be populated to check if supported in playbook"
+            )
+
+        is_supported = True
+        if self.lambda_folder_name.startswith("_"):
+            is_supported = False
+        if "endpoint" in self.lambda_folder_name:
+            is_supported = False
+
+        self.supported_in_playbook = is_supported
+        return is_supported
+
 
 # class SliceType(BaseModel):
 #     type_name: str
@@ -104,10 +126,14 @@ class SoclessFunction(BaseModel):
     supports_kwargs: bool = False
     return_statements: List[Dict[str, Any]] = []
 
-    def check_and_set_supported_in_playbook(self):
+    def check_and_set_resource_type(self):
         for arg in self.arguments:
             if arg.name in INTERACTION_ARG_NAMES:
                 self.resource_type = SoclessResourceType.SOCLESS_INTERACTION
+
+    def check_and_set_supported_in_playbook(self):
+        # requires that function meta is populated
+        return self.meta.check_supported_in_playbook_via_meta()
 
 
 class IntegrationMeta(BaseModel):
