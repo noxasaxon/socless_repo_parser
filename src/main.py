@@ -11,6 +11,36 @@ from src.models import AllIntegrations, IntegrationFamily, RepoNameInfo
 from urllib.parse import urlparse
 
 
+def parse_repo_names(
+    cli_repo_input: Union[List, str], default_org=""
+) -> List[RepoNameInfo]:
+    """Parse CLI string into a list of repo names and orgs. If no org is supplied, use the default org.
+
+    Example repo names:
+        "socless" (will use the default_org)
+        "noxasaxon/socless"
+        "https://github.com/noxasaxon/socless"
+    """
+    if isinstance(cli_repo_input, str):
+        cli_repo_input = cli_repo_input.split(",")
+    repos = [name.strip() for name in cli_repo_input]
+
+    all_repos = []
+    for repo in repos:
+        parsed = repo_path = urlparse(repo)
+        repo_path = parsed.path
+        # if supplied with a full url, path will have a leading /
+        repo_path = repo_path[1:] if repo_path.startswith("/") else repo_path
+        repo_path = repo_path.split("/")
+        if len(repo_path) < 2:
+            repo_name_info = RepoNameInfo(name=repo_path[0], org=default_org)
+        else:
+            repo_name_info = RepoNameInfo(name=repo_path[1], org=repo_path[0])
+        all_repos.append(repo_name_info)
+
+    return all_repos
+
+
 def build_socless_info(
     repos: Union[List, str],
     default_org="twilo-labs",
@@ -67,33 +97,3 @@ def build_socless_info(
         print(json.dumps(all_integrations.dict()))
 
     return all_integrations
-
-
-def parse_repo_names(
-    cli_repo_input: Union[List, str], default_org=""
-) -> List[RepoNameInfo]:
-    """Parse CLI string into a list of repo names and orgs. If no org is supplied, use the default org.
-
-    Example repo names:
-        "socless" (will use the default_org)
-        "noxasaxon/socless"
-        "https://github.com/noxasaxon/socless"
-    """
-    if isinstance(cli_repo_input, str):
-        cli_repo_input = cli_repo_input.split(",")
-    repos = [name.strip() for name in cli_repo_input]
-
-    all_repos = []
-    for repo in repos:
-        parsed = repo_path = urlparse(repo)
-        repo_path = parsed.path
-        # if supplied with a full url, path will have a leading /
-        repo_path = repo_path[1:] if repo_path.startswith("/") else repo_path
-        repo_path = repo_path.split("/")
-        if len(repo_path) < 2:
-            repo_name_info = RepoNameInfo(name=repo_path[0], org=default_org)
-        else:
-            repo_name_info = RepoNameInfo(name=repo_path[1], org=repo_path[0])
-        all_repos.append(repo_name_info)
-
-    return all_repos
