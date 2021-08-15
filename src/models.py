@@ -15,6 +15,7 @@ import docstring_parser
 class RepoNameInfo:
     name: str
     org: str
+    url: str = ""
 
 
 @dataclass
