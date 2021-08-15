@@ -261,6 +261,7 @@ def socless_lambda_file_parser(py_file_string) -> SoclessFunction:
     function_info.return_statements = get_return_statements(handle_state_node)
     function_info.supports_kwargs = True if handle_state_node.args.kwarg else False
     function_info.check_and_set_resource_type()
+    function_info.parse_docstring_and_set_descriptions(handle_state_node)
 
     return function_info
 

@@ -2,7 +2,6 @@ import ast
 from src.models import JsonDataType, SoclessFunction, SoclessFunctionArgument
 from src.parse_python import (
     get_function_args_info,
-    get_handle_state,
     socless_lambda_file_parser,
 )
 
@@ -157,3 +156,19 @@ def test_socless_lambda_file_parser_nested_handle_state_fn():
     assert not parsed.supports_kwargs
     assert len(parsed.arguments) == 7
     assert len([x for x in parsed.arguments if not x.internal]) == 6
+
+
+def test_socless_docstring_parser():
+    py_file_string = mock_lambda_file_with_nested_handle_state()
+    # handle_state_node = get_handle_state(py_file_string)
+    parsed = socless_lambda_file_parser(py_file_string)
+
+    assert parsed.description
+    for arg in parsed.arguments:
+        if not arg.internal:
+            assert arg.description
+    # parsed = socless_lambda_file_parser(mock_lambda_file_with_nested_handle_state())
+
+    # assert not parsed.supports_kwargs
+    # assert len(parsed.arguments) == 7
+    # assert len([x for x in parsed.arguments if not x.internal]) == 6

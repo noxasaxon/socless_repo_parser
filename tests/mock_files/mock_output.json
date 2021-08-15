@@ -14,6 +14,7 @@
                         "supported_in_playbook": false
                     },
                     "resource_type": "socless_task",
+                    "description": "",
                     "arguments": [],
                     "supports_kwargs": false,
                     "return_statements": []
@@ -26,6 +27,7 @@
                         "supported_in_playbook": false
                     },
                     "resource_type": "socless_task",
+                    "description": "",
                     "arguments": [],
                     "supports_kwargs": false,
                     "return_statements": []
@@ -38,6 +40,7 @@
                         "supported_in_playbook": false
                     },
                     "resource_type": "socless_task",
+                    "description": "",
                     "arguments": [],
                     "supports_kwargs": false,
                     "return_statements": []
@@ -50,6 +53,7 @@
                         "supported_in_playbook": false
                     },
                     "resource_type": "socless_task",
+                    "description": "",
                     "arguments": [],
                     "supports_kwargs": false,
                     "return_statements": []
@@ -62,6 +66,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Add a key-value pair to the Socless custom mapping table",
                     "arguments": [
                         {
                             "name": "key",
@@ -93,6 +98,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "The AWS Request integration enables users call any AWS API.",
                     "arguments": [
                         {
                             "name": "service_name",
@@ -107,7 +113,7 @@
                             "name": "operation",
                             "data_type": "string",
                             "required": true,
-                            "description": "",
+                            "description": "The boto3 client operation you want to perform, e.g put_object",
                             "placeholder": "",
                             "internal": false,
                             "default_value": null
@@ -116,7 +122,7 @@
                             "name": "operation_parameters",
                             "data_type": "object",
                             "required": true,
-                            "description": "",
+                            "description": "Parameters for the operation. Required but can be empty dict for operations that don't take parameters",
                             "placeholder": "",
                             "internal": false,
                             "default_value": null
@@ -125,7 +131,7 @@
                             "name": "assume_role_config",
                             "data_type": "object",
                             "required": true,
-                            "description": "",
+                            "description": "Configuration for the role to assume to perform the operation. See https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sts.html#STS.Client.assume_role\nfor a full list of values. Common values include `RoleArn`, `RoleSessionName` and `ExternalId`",
                             "placeholder": "",
                             "internal": false,
                             "default_value": null
@@ -134,7 +140,7 @@
                             "name": "disable_pagination",
                             "data_type": "boolean",
                             "required": false,
-                            "description": "",
+                            "description": "Set to true to disable pagination",
                             "placeholder": "",
                             "internal": false,
                             "default_value": false
@@ -143,7 +149,7 @@
                             "name": "save_to_vault",
                             "data_type": "boolean",
                             "required": false,
-                            "description": "",
+                            "description": "Determines if to save the results to the SOCless vault if the results are too large for step functions",
                             "placeholder": "",
                             "internal": false,
                             "default_value": false
@@ -160,6 +166,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "This integration helps to cache, return and (optionally) re-map fields of data so that it can be used by other States. Choice states particularly benefit from this integration as",
                     "arguments": [
                         {
                             "name": "execution_context",
@@ -195,6 +202,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Simple Counter",
                     "arguments": [
                         {
                             "name": "context",
@@ -258,6 +266,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Creates a new event in Socless using the socless_create_events api from the socless_python library",
                     "arguments": [
                         {
                             "name": "event_context",
@@ -272,7 +281,7 @@
                             "name": "event_type",
                             "data_type": "string",
                             "required": true,
-                            "description": "",
+                            "description": "Human Readable Event name e.g 'Investigate Login'",
                             "placeholder": "",
                             "internal": false,
                             "default_value": null
@@ -281,7 +290,7 @@
                             "name": "details",
                             "data_type": "array<object>",
                             "required": true,
-                            "description": "",
+                            "description": "List of dictionaries containing the event details",
                             "placeholder": "",
                             "internal": false,
                             "default_value": null
@@ -290,7 +299,7 @@
                             "name": "playbook",
                             "data_type": "string",
                             "required": false,
-                            "description": "",
+                            "description": "The name of the playbook to execute",
                             "placeholder": "",
                             "internal": false,
                             "default_value": ""
@@ -299,7 +308,7 @@
                             "name": "dedup_keys",
                             "data_type": "array<>",
                             "required": false,
-                            "description": "",
+                            "description": "The keys to use to deduplicate the event",
                             "placeholder": "",
                             "internal": false,
                             "default_value": []
@@ -308,7 +317,7 @@
                             "name": "data_types",
                             "data_type": "object",
                             "required": false,
-                            "description": "",
+                            "description": "A mapping of what datatypes are contained in the event details",
                             "placeholder": "",
                             "internal": false,
                             "default_value": {}
@@ -317,7 +326,7 @@
                             "name": "add_to_details",
                             "data_type": "object",
                             "required": false,
-                            "description": "",
+                            "description": "A dictionary containing additional keys to add to each details dict",
                             "placeholder": "",
                             "internal": false,
                             "default_value": {}
@@ -338,6 +347,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Make any HTTP request using the requests library.",
                     "arguments": [
                         {
                             "name": "method",
@@ -396,6 +406,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "This function is useful for testing things, feel free to modify",
                     "arguments": [
                         {
                             "name": "input",
@@ -422,6 +433,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Get a value from the Socless Custom Mappings Table.",
                     "arguments": [
                         {
                             "name": "key",
@@ -453,6 +465,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Set the Investigation ID to status.",
                     "arguments": [
                         {
                             "name": "investigation_id",
@@ -500,6 +513,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Create a log file and upload it to SOCless logging bucket.",
                     "arguments": [
                         {
                             "name": "context",
@@ -557,6 +571,7 @@
                         "supported_in_playbook": false
                     },
                     "resource_type": "socless_task",
+                    "description": "",
                     "arguments": [],
                     "supports_kwargs": false,
                     "return_statements": []
@@ -569,12 +584,13 @@
                         "supported_in_playbook": false
                     },
                     "resource_type": "socless_task",
+                    "description": "Update the dynamoDB table with slack user's usernames and slack_ids",
                     "arguments": [
                         {
                             "name": "slack_profile_key",
                             "data_type": "string",
                             "required": false,
-                            "description": "",
+                            "description": "name in user profile to use for cache mapping",
                             "placeholder": "display_name",
                             "internal": false,
                             "default_value": "display_name"
@@ -604,12 +620,13 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Check if user is in a particular slack channel.",
                     "arguments": [
                         {
                             "name": "user_id",
                             "data_type": "string",
                             "required": true,
-                            "description": "",
+                            "description": "user id of the user invoking the slash command",
                             "placeholder": "",
                             "internal": false,
                             "default_value": null
@@ -618,7 +635,7 @@
                             "name": "target_channel_id",
                             "data_type": "string",
                             "required": true,
-                            "description": "",
+                            "description": "the channel id to be checked if user is in",
                             "placeholder": "",
                             "internal": false,
                             "default_value": null
@@ -627,7 +644,7 @@
                             "name": "token",
                             "data_type": "string",
                             "required": false,
-                            "description": "",
+                            "description": "you can pass an alternate token via Jinja template in playbook.json (ssm, environment, etc)",
                             "placeholder": "",
                             "internal": false,
                             "default_value": ""
@@ -651,6 +668,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Create slack channel and invite any provided slack_ids.",
                     "arguments": [
                         {
                             "name": "channel_name",
@@ -707,6 +725,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Get a slack user's profile from their username or slack_id.",
                     "arguments": [
                         {
                             "name": "username",
@@ -760,6 +779,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Add users to a channel. Requires a Slack User Token (Token_Type: xoxp)",
                     "arguments": [
                         {
                             "name": "channel_id",
@@ -814,6 +834,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Returns a list of all available channels in the workspace.",
                     "arguments": [
                         {
                             "name": "token",
@@ -840,6 +861,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_interaction",
+                    "description": "Send a Slack Message and store the message id for the message.",
                     "arguments": [
                         {
                             "name": "context",
@@ -949,6 +971,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_interaction",
+                    "description": "Send a Slack Message and store the message id for the message.",
                     "arguments": [
                         {
                             "name": "context",
@@ -1040,6 +1063,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_interaction",
+                    "description": "Send a dialog into Slack",
                     "arguments": [
                         {
                             "name": "context",
@@ -1130,6 +1154,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Send a Slack message without expecting a response.",
                     "arguments": [
                         {
                             "name": "context",
@@ -1202,6 +1227,7 @@
                         "supported_in_playbook": true
                     },
                     "resource_type": "socless_task",
+                    "description": "Set topic for a channel.",
                     "arguments": [
                         {
                             "name": "channel_id",
