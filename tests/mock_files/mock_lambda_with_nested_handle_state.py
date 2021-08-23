@@ -15,8 +15,7 @@ def lambda_handler(event, context):
         data_types: dict = {},
         add_to_details: dict = {},
     ):
-        """
-        Creates a new event in Socless using the socless_create_events api from the socless_python library
+        """Creates a new event in Socless using the socless_create_events api from the socless_python library.
         Args:
             event_type (str): Human Readable Event name e.g 'Investigate Login'
             details (list): List of dictionaries containing the event details

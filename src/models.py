@@ -1,18 +1,21 @@
 # from pydantic import Field
+import ast
 import json
 from enum import Enum
-from pydantic import BaseModel
 from typing import Dict, List, Any, Optional, Union
-from src.constants import INTERACTION_ARG_NAMES
+from dataclasses import dataclass
+from pydantic import BaseModel
 from github.Repository import Repository
 from github.ContentFile import ContentFile
-from dataclasses import dataclass
+from src.constants import INTERACTION_ARG_NAMES
+import docstring_parser
 
 
 @dataclass
 class RepoNameInfo:
     name: str
     org: str
+    url: str = ""
 
 
 @dataclass
@@ -122,6 +125,7 @@ class SoclessResourceType(str, Enum):
 class SoclessFunction(BaseModel):
     meta: SoclessFunctionMeta = SoclessFunctionMeta()
     resource_type: SoclessResourceType = SoclessResourceType.SOCLESS_TASK
+    description: str = ""
     arguments: List[SoclessFunctionArgument] = []
     supports_kwargs: bool = False
     return_statements: List[Dict[str, Any]] = []
@@ -134,6 +138,30 @@ class SoclessFunction(BaseModel):
     def check_and_set_supported_in_playbook(self):
         # requires that function meta is populated
         return self.meta.check_supported_in_playbook_via_meta()
+
+    def parse_docstring_and_set_descriptions(self, handle_state_node: ast.FunctionDef):
+        """Get docstring info from fn node and populate fn description and arg descriptions. NOTE: call this after self.arguments have been populated."""
+        docstring = ast.get_docstring(handle_state_node, clean=False)
+        if not docstring:
+            return
+
+        parsed_docstring = docstring_parser.parse(docstring)
+        self.description = parsed_docstring.short_description or ""
+        # print(parsed_docstring.long_description) # anything after the first sentence
+
+        for param in parsed_docstring.params:
+            for arg in self.arguments:
+                if arg.name == param.arg_name:
+                    arg.description = param.description
+                    break  # only breaks inner `arg` loop
+
+        # print(parsed_docstring.meta)  # includes params & returns
+        ### return statement documentation:
+        # for ret in parsed_docstring.many_returns:
+        #     print(ret.args)
+        #     print(ret.description)
+        #     print(ret.return_name)
+        #     print(ret.type_name)
 
 
 class IntegrationMeta(BaseModel):
